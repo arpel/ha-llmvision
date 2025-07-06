@@ -293,8 +293,7 @@ class Request:
                 if call.generate_title_prompt != "":
                     call.message = memory_title_prompt + call.generate_title_prompt + response_text
                 else:
-                    call.message = memory_title_prompt + \ 
-                        "Create a title for this text: " + response_text
+                    call.message = memory_title_prompt + "Create a title for this text: " + response_text
                 gen_title = await provider_instance.title_request(call)
 
                 return {"title": re.sub(r'[^a-zA-Z0-9ŽžÀ-ÿ\s]', '', gen_title), "response_text": response_text}
