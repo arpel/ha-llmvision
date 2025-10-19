@@ -46,7 +46,7 @@ class Timeline(CalendarEntity):
 
         # Path to the JSON file where events are stored
         self._db_path = os.path.join(self.hass.config.path(DOMAIN), "events.db")
-        self._file_path = f"/media/{DOMAIN}/snapshots"
+        self._file_path = self.hass.config.path(f"media/{DOMAIN}/snapshots")
         # Ensure the directory exists
         os.makedirs(os.path.dirname(self._db_path), exist_ok=True)
         os.makedirs(self._file_path, exist_ok=True)
