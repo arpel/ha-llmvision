@@ -630,6 +630,10 @@ class AzureOpenAI(Provider):
     def _generate_headers(self) -> dict:
         return {"Content-type": "application/json", "api-key": self.api_key}
 
+    def _uses_completion_tokens(self) -> bool:
+        """Return True when Azure expects max_completion_tokens (gpt-5 family)."""
+        return "gpt-5" in (self.model or "").lower()
+
     async def _make_request(self, data: dict) -> str:
         headers = self._generate_headers()
         endpoint = self.endpoint.get("base_url").format(
@@ -655,11 +659,6 @@ class AzureOpenAI(Provider):
 
     def _prepare_vision_data(self, call: Any) -> dict:
         default_parameters = self._get_default_parameters(call)
-        tokens_key = (
-            "max_completion_tokens"
-            if self.model in ["gpt-5", "gpt-5-mini", "gpt-5-nano"]
-            else "max_tokens"
-        )
         payload = {
             "messages": [{"role": "user", "content": []}],
             "temperature": default_parameters.get("temperature"),
@@ -667,13 +666,12 @@ class AzureOpenAI(Provider):
             "stream": False,
         }
 
-        # Remove temperature and top_p if model is gpt-5
-        if self.model in ["gpt-5", "gpt-5-mini", "gpt-5-nano"]:
-            payload = {
-                k: v for k, v in payload.items() if k not in ("temperature", "top_p")
-            }
-
-        payload[tokens_key] = call.max_tokens
+        if self._uses_completion_tokens():
+            payload.pop("temperature", None)
+            payload.pop("top_p", None)
+            payload["max_completion_tokens"] = call.max_tokens
+        else:
+            payload["max_tokens"] = call.max_tokens
         for image, filename in zip(call.base64_images, call.filenames):
             tag = (
                 ("Image " + str(call.base64_images.index(image) + 1))
@@ -734,11 +732,6 @@ class AzureOpenAI(Provider):
     def _prepare_text_data(self, call: Any) -> dict:
         default_parameters = self._get_default_parameters(call)
         title_prompt = self._get_title_prompt()
-        tokens_key = (
-            "max_completion_tokens"
-            if self.model in ["gpt-5", "gpt-5-mini", "gpt-5-nano"]
-            else "max_tokens"
-        )
         payload = {
             "messages": [
                 {"role": "user", "content": [{"type": "text", "text": title_prompt}]},
@@ -748,13 +741,13 @@ class AzureOpenAI(Provider):
             "top_p": default_parameters.get("top_p"),
             "stream": False,
         }
-        payload[tokens_key] = call.max_tokens
 
-        # Remove temperature and top_p if model is gpt-5
-        if self.model in ["gpt-5", "gpt-5-mini", "gpt-5-nano"]:
-            payload = {
-                k: v for k, v in payload.items() if k not in ("temperature", "top_p")
-            }
+        if self._uses_completion_tokens():
+            payload.pop("temperature", None)
+            payload.pop("top_p", None)
+            payload["max_completion_tokens"] = call.max_tokens
+        else:
+            payload["max_tokens"] = call.max_tokens
 
         # Add structured output format if requested
         if call.response_format == "json" and call.structure:
@@ -794,16 +787,10 @@ class AzureOpenAI(Provider):
             api_version=self.endpoint.get("api_version"),
         )
         headers = self._generate_headers()
-        tokens_key = (
-            "max_completion_tokens"
-            if self.model in ["gpt-5", "gpt-5-mini", "gpt-5-nano"]
-            else "max_tokens"
-        )
         data = {
             "messages": [{"role": "user", "content": [{"type": "text", "text": "Hi"}]}],
             "stream": False,
         }
-        data[tokens_key] = 1
         await self._post(url=endpoint, headers=headers, data=data)
 
     def supports_structured_output(self) -> bool:
