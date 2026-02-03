@@ -836,7 +836,6 @@ class Anthropic(Provider):
             "messages": [{"role": "user", "content": []}],
             "max_tokens": call.max_tokens,
             "temperature": default_parameters.get("temperature"),
-            "top_p": default_parameters.get("top_p"),
         }
 
         # Add structured output support using tools
@@ -910,7 +909,6 @@ class Anthropic(Provider):
             ],
             "max_tokens": call.max_tokens,
             "temperature": default_parameters.get("temperature"),
-            "top_p": default_parameters.get("top_p"),
         }
 
         # Add structured output support using tools
