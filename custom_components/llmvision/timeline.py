@@ -496,6 +496,69 @@ class Timeline:
             dt = dt.replace(tzinfo=datetime.timezone.utc)
         return dt
 
+    def _get_retention_days(self) -> int | None:
+        """Return the configured retention window in days (None disables cleanup)."""
+        raw_value = self._config_entry.options.get(CONF_RETENTION_TIME)
+        if raw_value is None:
+            raw_value = self.retention_time
+
+        if raw_value in (None, ""):
+            return None
+
+        try:
+            days = int(raw_value)
+        except (TypeError, ValueError):
+            _LOGGER.warning(
+                "Invalid retention_time=%s. Skipping automatic event purge.",
+                raw_value,
+            )
+            return None
+
+        if days <= 0:
+            return None
+
+        return days
+
+    async def _purge_expired_events(self) -> None:
+        """Remove events older than now - retention_time days."""
+        if getattr(self, "_migrating", False):
+            return
+
+        retention_days = self._get_retention_days()
+        if retention_days is None:
+            return
+
+        cutoff = dt_util.utcnow() - datetime.timedelta(days=retention_days)
+        cutoff_local = dt_util.as_local(self._ensure_datetime(cutoff)).isoformat()
+
+        try:
+            async with aiosqlite.connect(self._db_path) as db:
+                async with db.execute(
+                    """
+                    SELECT uid, key_frame FROM events
+                    WHERE start IS NOT NULL AND start < ?
+                """,
+                    (cutoff_local,),
+                ) as cursor:
+                    stale_rows = list(await cursor.fetchall())
+
+                if not stale_rows:
+                    return
+
+                await db.executemany(
+                    "DELETE FROM events WHERE uid = ?",
+                    [(row[0],) for row in stale_rows],
+                )
+                await db.commit()
+
+                _LOGGER.info(
+                    "Purged %s expired timeline event(s) older than %s day(s)",
+                    len(stale_rows),
+                    retention_days,
+                )
+        except aiosqlite.Error as e:
+            _LOGGER.error(f"Error purging expired timeline events: {e}")
+
     async def _get_category_from_label(self, label: str) -> str:
         """Returns the category for a given label using the language regex template."""
         return (await _get_category_and_label(self.hass, self._config_entry, label))[0]
@@ -511,6 +574,7 @@ class Timeline:
 
     async def load_events(self):
         """Loads events from the database into memory"""
+        await self._purge_expired_events()
         self.events = []
         try:
             async with aiosqlite.connect(self._db_path) as db:
@@ -585,6 +649,7 @@ class Timeline:
         Supports filtering by camera, start/end range and sorting by start (newest first).
         category are ignored for now.
         """
+        await self._purge_expired_events()
         events: list[dict] = []
 
         # Normalize start/end inputs to timezone-aware datetimes (or None)
