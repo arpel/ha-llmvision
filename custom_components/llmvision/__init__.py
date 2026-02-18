@@ -73,7 +73,7 @@ from .const import (
     RESPONSE_FORMAT,
     STRUCTURE,
     TITLE_FIELD,
-    DESCPRIPTION_FIELD,
+    DESCRIPTION_FIELD,
 )
 
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
