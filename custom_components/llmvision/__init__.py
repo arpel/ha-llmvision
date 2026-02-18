@@ -473,7 +473,7 @@ class ServiceCallData:
         self.response_format = data_call.data.get(RESPONSE_FORMAT, "text")
         self.structure = data_call.data.get(STRUCTURE, None)
         self.title_field = data_call.data.get(TITLE_FIELD, "")
-        self.description_field = data_call.data.get(DESCPRIPTION_FIELD, "")
+        self.description_field = data_call.data.get(DESCRIPTION_FIELD, "")
         self.memory: Memory | None = None
 
         # ------------ Create Event ------------
