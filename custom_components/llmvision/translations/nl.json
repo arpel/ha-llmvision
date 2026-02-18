@@ -113,7 +113,7 @@
       },
       "azure": {
         "title": "Azure configureren",
-        "description": "Voer een geldige Azure API-sleutel, basis-URL, implementatie en API-versie in.\nDe basis-URL moet het formaat `https://domein.openai.azure.com/` hebben, inclusief de afsluitende schuine streep.",
+        "description": "Voer een geldige Azure API-sleutel, basis-URL, implementatie en API-versie in.",
         "sections": {
           "connection_section": {
             "name": "Verbinding",

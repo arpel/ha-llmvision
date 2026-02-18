@@ -113,7 +113,7 @@
             },
             "azure": {
                 "title": "Konfigurera Azure",
-                "description": "Ange en giltig Azure API-nyckel, bas-URL, deployment och API-version.\nBas-URL måste ha formatet `https://domain.openai.azure.com/` inklusive snedstreck på slutet.",
+                "description": "Ange en giltig Azure API-nyckel, bas-URL, deployment och API-version.",
                 "sections": {
                     "connection_section": {
                         "name": "Anslutning",

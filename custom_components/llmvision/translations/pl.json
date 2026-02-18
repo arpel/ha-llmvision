@@ -113,7 +113,7 @@
             },
             "azure": {
                 "title": "Skonfiguruj Azure",
-                "description": "Podaj poprawny klucz API Azure, adres URL, wdrożenie i wersję API.\nAdres URL musi mieć format `https://domain.openai.azure.com/` łącznie z ukośnikiem na końcu.",
+                "description": "Podaj poprawny klucz API Azure, adres URL, wdrożenie i wersję API.",
                 "sections": {
                     "connection_section": {
                         "name": "Połączenie",

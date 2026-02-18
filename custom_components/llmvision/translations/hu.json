@@ -113,7 +113,7 @@
             },
             "azure": {
                 "title": "Azure konfigurálása",
-                "description": "Adj meg érvényes Azure API-kulcsot, alap URL-címet, Deployment-et és API-verziót.\nAz alap URL-címnek `https://domain.openai.azure.com/` formátumúnak kell lennie, beleértve a záró perjelet is.",
+                "description": "Adj meg érvényes Azure API-kulcsot, alap URL-címet, Deployment-et és API-verziót.",
                 "sections": {
                     "connection_section": {
                         "name": "Kapcsolat",

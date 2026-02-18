@@ -113,7 +113,7 @@
             },
             "azure": {
                 "title": "Azure Yapılandırması",
-                "description": "Geçerli bir Azure API anahtarı, temel URL, dağıtım ve API sürümü girin.\nTemel URL şu biçimde olmalıdır: `https://alan.openai.azure.com/` (sondaki eğik çizgi dahil).",
+                "description": "Geçerli bir Azure API anahtarı, temel URL, dağıtım ve API sürümü girin.",
                 "sections": {
                     "connection_section": {
                         "name": "Bağlantı",

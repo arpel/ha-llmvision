@@ -113,7 +113,7 @@
             },
             "azure": {
                 "title": "Konfigurace Azure",
-                "description": "Zadejte platný API klíč pro Azure, základní URL adresu, název instalace (deployment) a verzi API.\nZákladní URL adresa musí být ve formátu `https://domain.openai.azure.com/` včetně lomítka na konci.",
+                "description": "Zadejte platný API klíč pro Azure, základní URL adresu, název instalace (deployment) a verzi API.",
                 "sections": {
                     "connection_section": {
                         "name": "Připojení",

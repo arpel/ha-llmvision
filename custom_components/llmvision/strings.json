@@ -113,7 +113,7 @@
             },
             "azure": {
                 "title": "Configure Azure",
-                "description": "Provide a valid Azure API key, base URL, deployment and API version.\nThe Base URL must be in the format `https://domain.openai.azure.com/` including the trailing slash.",
+                "description": "Provide a valid Azure API key, base URL, deployment and API version.",
                 "sections": {
                     "connection_section": {
                         "name": "Connection",

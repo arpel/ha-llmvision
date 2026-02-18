@@ -113,7 +113,7 @@
             },
             "azure": {
                 "title": "配置Azure",
-                "description": "请输入有效的Azure API密钥、基础URL、部署和API版本。\n基础URL格式必须为 `https://domain.openai.azure.com/`，包括结尾的斜杠。",
+                "description": "请输入有效的Azure API密钥、基础URL、部署和API版本。",
                 "sections": {
                     "connection_section": {
                         "name": "连接",

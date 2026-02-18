@@ -113,7 +113,7 @@
             },
             "azure": {
                 "title": "Configurer Azure",
-                "description": "Fournissez une clé API Azure valide, l'URL de base, le déploiement et la version de l'API.\nL'URL de base doit être au format `https://domain.openai.azure.com/` avec le slash final.",
+                "description": "Fournissez une clé API Azure valide, l'URL de base, le déploiement et la version de l'API.",
                 "sections": {
                     "connection_section": {
                         "name": "Connexion",
