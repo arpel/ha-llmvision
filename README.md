@@ -11,7 +11,7 @@
 <img alt="Issues" src="https://img.shields.io/github/issues/valentinfrlch/ha-llmvision?color=0088ff">
 <img alt="Static Badge" src="https://img.shields.io/badge/support-buymeacoffee?logo=buymeacoffee&logoColor=black&color=%23FFDD00&link=https%3A%2F%2Fbuymeacoffee.com%2Fllmvision">
     <h2 align=center style="font-weight:bold">
-      Visual Intelligence for your Home.
+      Visual Intelligence for your home.
     </h2>
 </p>
 
