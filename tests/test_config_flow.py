@@ -4,7 +4,6 @@ from unittest.mock import Mock, patch
 from custom_components.llmvision.config_flow import (
     llmvisionConfigFlow,
     flatten_dict,
-    normalize_text_list,
 )
 
 
@@ -63,20 +62,3 @@ class TestFlattenDict:
         result = flatten_dict(flat)
 
         assert result == flat
-
-
-class TestNormalizeTextList:
-    """Test normalize_text_list helper."""
-
-    def test_none_returns_empty(self):
-        assert normalize_text_list(None) == []
-
-    def test_list_filters_blanks(self):
-        assert normalize_text_list(["a", "", " b "]) == ["a", "b"]
-
-    def test_string_splits_newlines_and_commas(self):
-        raw = "one\nTwo\r\nthree,four"
-        assert normalize_text_list(raw) == ["one", "Two", "three", "four"]
-
-    def test_string_with_whitespace_only(self):
-        assert normalize_text_list("  \n  ") == []
